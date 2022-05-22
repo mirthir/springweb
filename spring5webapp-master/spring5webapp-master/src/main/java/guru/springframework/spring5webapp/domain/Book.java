@@ -5,6 +5,7 @@ package guru.springframework.spring5webapp.domain;
 
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -20,18 +21,21 @@ public class Book {
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authors;
+    private Set<Author> authors = new HashSet<>();
 
     public Book() {
     }
 
-    public Book(String title, String isbn, Set<Author> author) {
+    public Book(String title, String isbn) {
         this.title = title;
         this.isbn = isbn;
-        this.authors = author;
     }
 
-    public Book(Long id) {
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
         Id = id;
     }
 
@@ -43,19 +47,42 @@ public class Book {
         this.title = title;
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
+    public String getIsbn() { return isbn;}
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
-    public Set<Author> getAuthor() {
+    public Set<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthor(Set<Author> author) {
-        this.authors = author;
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "Id=" + Id +
+                ", title='" + title + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", authors=" + authors +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        return Id != null ? Id.equals(book.Id) : book.Id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return Id != null ? Id.hashCode() : 0;
     }
 }
